@@ -1,3 +1,4 @@
+const mongoose=require("mongoose")
 const isValid = function (value) {
     if (typeof value == "undefined" || value == null) return false;
     if (typeof value == "string" && value.trim().length == 0) return false;
@@ -27,7 +28,7 @@ const isValid = function (value) {
   
 
   const isValidTitle=function(title){
-      return ['Mr','Mrs','Miss'].indexOf!=-1
+      return ['Mr','Mrs','Miss'].indexOf(title)!=-1
   }
 
   const checkPassword=function(password){
@@ -41,6 +42,10 @@ const isValid = function (value) {
     const res=value.split(" ").filter(word=>word).join(" ")
     return res
 }
+
+const isValidObjectId = function (objectId) {
+    return mongoose.Types.ObjectId.isValid(objectId)
+}
   module.exports = {
     isValid,
     isValidName,
@@ -49,5 +54,7 @@ const isValid = function (value) {
     isValidMobile,
     isValidUser,
     isValidTitle,
-    checkPassword
+    checkPassword,
+    extraspace,
+    isValidObjectId
   };

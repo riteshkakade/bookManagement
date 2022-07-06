@@ -12,76 +12,81 @@ checkPassword}=require("../validator/validator")
 const registerUser=async function(req,res){
     try{
          const data=req.body
-        // if(!isValidRequest(data)){
-        //     return res.status(400).send({status:false,message:"please enter a valid input"})
-        // }
+        if(!isValidRequest(data)){
+            return res.status(400).send({status:false,message:"please enter a valid input"})
+        }
 
-        // //extracting params
-        // let {title,name,phone,email,password,address}=data
-        // const newuser={}
+        //extracting params
+        let {title,name,phone,email,password,address}=data
+        const newuser={}
 
-        // //validation starts
-        // if(!isValid(title)){
-        //     return res.status(400).send({status:false,message:"Title is required"})
-        // }
+        //validation starts
+        if(!isValid(title)){
+            return res.status(400).send({status:false,message:"Title is required"})
+        }
 
-        // if(isValidTitle(title)){
-        //     return res.status(400).send({status:false,message:"Title must be among [Mr,Mrs,Miss]"})
-        // }
+        console.log(!isValidTitle(title))
 
-        // newuser.title=title
+        if(!isValidTitle(title)){
+            return res.status(400).send({status:false,message:"Title must be among [Mr,Mrs,Miss]"})
+        }
 
-        // if(!isValid(name)){
-        //     return res.status(400).send({status:false,message:"name is required"})
-        // }
+        newuser.title=title
 
-        // if(!isValidUser(name)){
-        //     return res.status(400).send({status:false,message:"Please enter a valid name"})
-        // }
+        if(!isValid(name)){
+            return res.status(400).send({status:false,message:"name is required"})
+        }
 
-        // newuser.name=name
+        if(!isValidUser(name)){
+            return res.status(400).send({status:false,message:"Please enter a valid name"})
+        }
 
-        // if(!isValid(phone)){
-        //     return res.status(400).send({status:false,message:"phone is required"})
-        // }
+        newuser.name=name
 
-        // if(!isValidMobile(phone)){
-        //     return res.status(400).send({status:false,message:"Please enter a valid indian phone number"})
-        // }
+        if(!isValid(phone)){
+            return res.status(400).send({status:false,message:"phone is required"})
+        }
 
-        // if(!isValid(email)){
-        //     return res.status(400).send({status:false,message:"email is required"})
-        // }
+        if(!isValidMobile(phone)){
+            return res.status(400).send({status:false,message:"Please enter a valid indian phone number"})
+        }
 
-        // if(!isValidMail(email)){
-        //     return res.status(400).send({status:false,message:"Please enter a valid email"})
-        // }
+        if(!isValid(email)){
+            return res.status(400).send({status:false,message:"email is required"})
+        }
 
-        // const ifAlreadyExist=await user.findOne({$or: [{ email: email }, { phone: phone }]})
+        if(!isValidMail(email)){
+            return res.status(400).send({status:false,message:"Please enter a valid email"})
+        }
 
-        // if(ifAlreadyExist){
-        //     return res.status(400).send({status:false,message:"Email or Phone number already in use"})
-        // }
+        const {...ifAlreadyExist}=await user.findOne({$or: [{ email: email }, { phone: phone }]})
+        console.log(ifAlreadyExist)
 
-        // newuser.email=email
-        // newuser.phone=phone
 
-        // if(!isValid(password)){
-        //     return res.status(400).send({status:false,message:"email is required"})
-        // }
 
-        // if(!checkPassword(password)){
-        //     return res.status(400).send({status:false,message:"password length should be between 8-15 characters"})
-        // }
+        if(ifAlreadyExist){
+            return res.status(400).send({status:false,message:"Email or Phone number already in use"})
+        }
 
-        // newuser.password=password
+        newuser.email=email
+        newuser.phone=phone
 
-        // // if(isValid(address)){
-        // //      if(isValid(address.street)||isValid(address.city)||isValid(address.pincode))
-        //     newuser.address=address
+        if(!isValid(password)){
+            return res.status(400).send({status:false,message:"email is required"})
+        }
 
-        // //}
-        // //valdation ends
+        if(!checkPassword(password)){
+            return res.status(400).send({status:false,message:"password length should be between 8-15 characters"})
+        }
+
+        newuser.password=password
+
+        // if(isValid(address)){
+        //      if(isValid(address.street)||isValid(address.city)||isValid(address.pincode))
+            newuser.address=address
+
+        //}
+        //valdation ends
 
         const newUser=await user.create(data)
         res.status(201).send({status:true,message:"sucess",data:newUser})
@@ -93,4 +98,14 @@ const registerUser=async function(req,res){
     }
 }
 
-module.exports={registerUser}
+const login=async function(req,res){
+    try{
+        let data=req.data
+        let 
+    }
+    catch(err){
+        res.status(500).send({status:false,message:err.message})
+    }
+
+}
+module.exports={registerUser,login}
