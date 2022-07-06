@@ -93,4 +93,55 @@ const registerUser=async function(req,res){
     }
 }
 
-module.exports={registerUser}
+
+
+//---------------------user login-----------------------------//
+
+const login = async function(req,res){
+    try{
+        let data = req.body
+
+         if(!isValidRequest(data)){
+            return res.status(400).send({status:false,message:"please enter a valid input"})
+        }
+
+        let email= data.email
+         if(!isValid(email)){
+            return res.status(400).send({status:false,message:"email is required"})
+        }
+
+        if(!isValidMail(email)){
+            return res.status(400).send({status:false,message:"Please enter a valid email"})
+        }
+
+        let password = data.password
+         if(!isValid(password)){
+            return res.status(400).send({status:false,message:"email is required"})
+        }
+
+        if(!checkPassword(password)){
+            return res.status(400).send({status:false,message:"password length should be between 8-15 characters"})
+        }
+
+        var loginUser = await user.findOne({email:email,password:password})
+        if(!loginUser){
+            res.status(401).send({status:false,message:"login Credentials are wrong"}) //login email and password does not match validation.
+        }
+            
+        let token = jwt.sign(
+            {
+                userId:loginUser._id,
+                expiresIn: '1h'
+                
+            },"pro@3" 
+            )
+            res.setHeader("x-api-key",token)
+            res.status(201).send({status:true,message: 'Success',data:token}) //creating jwt after successful login by author
+    
+    }
+    catch(err){
+        res.status(500).send({status:false,message:err.message})
+    }
+}
+
+module.exports={registerUser,login}

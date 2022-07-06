@@ -27,7 +27,7 @@ const isValid = function (value) {
   
 
   const isValidTitle=function(title){
-      return ['Mr','Mrs','Miss'].indexOf!=-1
+      return ['Mr','Mrs','Miss'].indexOf(title)!=-1
   }
 
   const checkPassword=function(password){
