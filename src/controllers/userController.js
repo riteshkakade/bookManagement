@@ -1,147 +1,148 @@
 //const { is } = require("express/lib/request")
-const user=require("../models/userModel")
-const {isValid, 
+const user = require("../models/userModel")
+const { isValid,
     isValidName,
     isValidRequest,
     isValidMail,
     isValidMobile,
     isValidUser,
-isValidTitle,
-checkPassword}=require("../validator/validator")
+    isValidTitle,
+    checkPassword } = require("../validator/validator")
 
-const registerUser=async function(req,res){
-    try{
-         const data=req.body
-        // if(!isValidRequest(data)){
-        //     return res.status(400).send({status:false,message:"please enter a valid input"})
-        // }
+const registerUser = async function (req, res) {
+    try {
+        const data = req.body
+        if (!isValidRequest(data)) {
+            return res.status(400).send({ status: false, message: "please enter a valid input" })
+        }
 
-        // //extracting params
-        // let {title,name,phone,email,password,address}=data
-        // const newuser={}
+        //extracting params
+        let { title, name, phone, email, password, address } = data
+        const newuser = {}
 
-        // //validation starts
-        // if(!isValid(title)){
-        //     return res.status(400).send({status:false,message:"Title is required"})
-        // }
+        //validation starts
+        if (!isValid(title)) {
+            return res.status(400).send({ status: false, message: "Title is required" })
+        }
 
-        // if(isValidTitle(title)){
-        //     return res.status(400).send({status:false,message:"Title must be among [Mr,Mrs,Miss]"})
-        // }
+        console.log(!isValidTitle(title))
 
-        // newuser.title=title
+        if (!isValidTitle(title)) {
+            return res.status(400).send({ status: false, message: "Title must be among [Mr,Mrs,Miss]" })
+        }
 
-        // if(!isValid(name)){
-        //     return res.status(400).send({status:false,message:"name is required"})
-        // }
+        newuser.title = title
 
-        // if(!isValidUser(name)){
-        //     return res.status(400).send({status:false,message:"Please enter a valid name"})
-        // }
+        if (!isValid(name)) {
+            return res.status(400).send({ status: false, message: "name is required" })
+        }
 
-        // newuser.name=name
+        if (!isValidUser(name)) {
+            return res.status(400).send({ status: false, message: "Please enter a valid name" })
+        }
 
-        // if(!isValid(phone)){
-        //     return res.status(400).send({status:false,message:"phone is required"})
-        // }
+        newuser.name = name
 
-        // if(!isValidMobile(phone)){
-        //     return res.status(400).send({status:false,message:"Please enter a valid indian phone number"})
-        // }
+        if (!isValid(phone)) {
+            return res.status(400).send({ status: false, message: "phone is required" })
+        }
 
-        // if(!isValid(email)){
-        //     return res.status(400).send({status:false,message:"email is required"})
-        // }
+        if (!isValidMobile(phone)) {
+            return res.status(400).send({ status: false, message: "Please enter a valid indian phone number" })
+        }
 
-        // if(!isValidMail(email)){
-        //     return res.status(400).send({status:false,message:"Please enter a valid email"})
-        // }
+        if (!isValid(email)) {
+            return res.status(400).send({ status: false, message: "email is required" })
+        }
 
-        // const ifAlreadyExist=await user.findOne({$or: [{ email: email }, { phone: phone }]})
+        if (!isValidMail(email)) {
+            return res.status(400).send({ status: false, message: "Please enter a valid email" })
+        }
 
-        // if(ifAlreadyExist){
-        //     return res.status(400).send({status:false,message:"Email or Phone number already in use"})
-        // }
+        const ifAlreadyExist = await user.findOne({ $or: [{ email: email }, { phone: phone }] })
+        console.log(ifAlreadyExist)
 
-        // newuser.email=email
-        // newuser.phone=phone
+        if (ifAlreadyExist) {
+            return res.status(400).send({ status: false, message: "Email or Phone number already in use" })
+        }
 
-        // if(!isValid(password)){
-        //     return res.status(400).send({status:false,message:"email is required"})
-        // }
+        newuser.email = email
+        newuser.phone = phone
 
-        // if(!checkPassword(password)){
-        //     return res.status(400).send({status:false,message:"password length should be between 8-15 characters"})
-        // }
+        if (!isValid(password)) {
+            return res.status(400).send({ status: false, message: "email is required" })
+        }
 
-        // newuser.password=password
+        if (!checkPassword(password)) {
+            return res.status(400).send({ status: false, message: "password length should be between 8-15 characters" })
+        }
 
-        // // if(isValid(address)){
-        // //      if(isValid(address.street)||isValid(address.city)||isValid(address.pincode))
-        //     newuser.address=address
+        newuser.password = password
 
-        // //}
-        // //valdation ends
+        // if(isValid(address)){
+        //      if(isValid(address.street)||isValid(address.city)||isValid(address.pincode))
+        newuser.address = address
 
-        const newUser=await user.create(data)
-        res.status(201).send({status:true,message:"sucess",data:newUser})
+        //}
+        //valdation ends
+
+        const newUser = await user.create(data)
+        res.status(201).send({ status: true, message: "sucess", data: newUser })
 
 
     }
-    catch(err){
-        res.status(500).send({status:false,message:err.message})
+    catch (err) {
+        res.status(500).send({ status: false, message: err.message })
     }
 }
-
-
 
 //---------------------user login-----------------------------//
 
-const login = async function(req,res){
-    try{
+const login = async function (req, res) {
+    try {
         let data = req.body
 
-         if(!isValidRequest(data)){
-            return res.status(400).send({status:false,message:"please enter a valid input"})
+        if (!isValidRequest(data)) {
+            return res.status(400).send({ status: false, message: "please enter a valid input" })
         }
 
-        let email= data.email
-         if(!isValid(email)){
-            return res.status(400).send({status:false,message:"email is required"})
+        let email = data.email
+        if (!isValid(email)) {
+            return res.status(400).send({ status: false, message: "email is required" })
         }
 
-        if(!isValidMail(email)){
-            return res.status(400).send({status:false,message:"Please enter a valid email"})
+        if (!isValidMail(email)) {
+            return res.status(400).send({ status: false, message: "Please enter a valid email" })
         }
 
         let password = data.password
-         if(!isValid(password)){
-            return res.status(400).send({status:false,message:"email is required"})
+        if (!isValid(password)) {
+            return res.status(400).send({ status: false, message: "email is required" })
         }
 
-        if(!checkPassword(password)){
-            return res.status(400).send({status:false,message:"password length should be between 8-15 characters"})
+        if (!checkPassword(password)) {
+            return res.status(400).send({ status: false, message: "password length should be between 8-15 characters" })
         }
 
-        var loginUser = await user.findOne({email:email,password:password})
-        if(!loginUser){
-            res.status(401).send({status:false,message:"login Credentials are wrong"}) //login email and password does not match validation.
+        var loginUser = await user.findOne({ email: email, password: password })
+        if (!loginUser) {
+            res.status(401).send({ status: false, message: "login Credentials are wrong" }) //login email and password does not match validation.
         }
-            
+
         let token = jwt.sign(
             {
-                userId:loginUser._id,
+                userId: loginUser._id,
                 expiresIn: '1h'
-                
-            },"pro@3" 
-            )
-            res.setHeader("x-api-key",token)
-            res.status(201).send({status:true,message: 'Success',data:token}) //creating jwt after successful login by author
-    
+
+            }, "pro@3"
+        )
+        res.setHeader("x-api-key", token)
+        res.status(201).send({ status: true, message: 'Success', data: token }) //creating jwt after successful login by author
+
     }
-    catch(err){
-        res.status(500).send({status:false,message:err.message})
+    catch (err) {
+        res.status(500).send({ status: false, message: err.message })
     }
 }
 
-module.exports={registerUser,login}
+module.exports = { registerUser, login }
