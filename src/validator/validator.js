@@ -31,6 +31,10 @@ const isValid = function (value) {
     return /^(?=(?:\D*\d){10}(?:(?:\D*\d){3})?$)[\d-]+$/.test(ISBN);
   };
 
+  const isValidDate=function(releasedAt){
+    return /^\d{4}\-(0?[1-9]|1[012])\-(0?[1-9]|[12][0-9]|3[01])$/.test(releasedAt)
+  }
+
   const isValidTitle=function(title){
       return ['Mr','Mrs','Miss'].indexOf(title)!=-1
   }
@@ -50,6 +54,28 @@ const isValid = function (value) {
 const isValidObjectId = function (objectId) {
     return mongoose.Types.ObjectId.isValid(objectId)
 }
+
+const checkarray = function (arr) {
+  let msg = 0
+  let flag = 0
+  if (arr.length == 0) {
+      let msg1 = " array must contain must contain some value"
+      return msg1
+  }
+
+  arr.forEach(element => {
+      if (element.trim().length == 0)
+          flag = 1
+  });
+
+  if (flag == 1) {
+      msg = "array element must contain characters other than spaces"
+      return msg
+  }
+
+  return true
+
+}
   module.exports = {
     isValid,
     isValidName,
@@ -61,5 +87,8 @@ const isValidObjectId = function (objectId) {
     isValidTitle,
     checkPassword,
     extraspace,
-    isValidObjectId
+    isValidObjectId,
+    isValidISBN,
+    checkarray,
+    isValidDate
   };

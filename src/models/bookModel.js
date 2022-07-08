@@ -41,6 +41,10 @@ const bookSchema=new mongoose.Schema({
         Comment:"Holds the number of reviews of this book"
 
     },
+    releasedAt:{
+        type:Date,
+        required:true
+    },
     deletedAt:{
         type:Date
     },

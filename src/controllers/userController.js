@@ -1,4 +1,5 @@
 //const { is } = require("express/lib/request")
+const jwt=require("jsonwebtoken")
 const user = require("../models/userModel")
 const { isValid,
     isValidName,
@@ -132,6 +133,7 @@ const login = async function (req, res) {
         let token = jwt.sign(
             {
                 userId: loginUser._id,
+                //iat:,
                 expiresIn: '1h'
 
             }, "pro@3"
