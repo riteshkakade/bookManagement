@@ -14,6 +14,7 @@ const authentication = async function (req, res, next) {
         let decodedtoken = jwt.verify(token, "pro@3")
         if (!decodedtoken) return res.status(400).send({ status: false, message: "token is invalid" });
 
+      
         req.decodedtoken = decodedtoken
         //req["x-api-key"] = decodedtoken
         next()
@@ -43,7 +44,7 @@ const createAuthorize=async function(req,res,next){
                 message: "user not found! please check userId"
             })
         }
-        userOfToken=req.decodedtoken.userId
+        let userOfToken=req.decodedtoken.userId
 
         if(userId!=userOfToken){
             return res.status(403).send({
@@ -71,19 +72,19 @@ const authorization = async function (req, res, next) {
 
 
         if (!isValidObjectId(bookId)) {
-            return res.status(400).send({ status: false, message: "invalid userId" })
+            return res.status(400).send({ status: false, message: "invalid bookId" })
         }
 
-        const userExist = await book.findOne({_id:bookId,isDeleted:false})
-        if (!userExist) {
+        const bookExist = await book.findOne({_id:bookId,isDeleted:false})
+        if (!bookExist) {
             return res.status(404).send({
                 status: false,
-                message: "user not found! please check userId"
+                message: "book not found! please check bookId"
             })
         }
 
-        let userId=userExist.userId
-        userOfToken=req.decodedtoken.userId
+        let userId=bookExist.userId
+        let userOfToken=req.decodedtoken.userId
         if (userOfToken!= userId) {
             return res.status(403).send({
                 status: false,

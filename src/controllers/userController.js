@@ -1,4 +1,3 @@
-//const { is } = require("express/lib/request")
 const jwt=require("jsonwebtoken")
 const user = require("../models/userModel")
 const { isValid,
@@ -10,6 +9,7 @@ const { isValid,
     isValidTitle,
     checkPassword } = require("../validator/validator")
 
+//<<------------------------------------------Create User--------------------------------------------------->>    
 const registerUser = async function (req, res) {
     try {
         const data = req.body
@@ -26,7 +26,7 @@ const registerUser = async function (req, res) {
             return res.status(400).send({ status: false, message: "Title is required" })
         }
 
-        console.log(!isValidTitle(title))
+        
 
         if (!isValidTitle(title)) {
             return res.status(400).send({ status: false, message: "Title must be among [Mr,Mrs,Miss]" })
@@ -61,7 +61,7 @@ const registerUser = async function (req, res) {
         }
 
         const ifAlreadyExist = await user.findOne({ $or: [{ email: email }, { phone: phone }] })
-        console.log(ifAlreadyExist)
+        
 
         if (ifAlreadyExist) {
             return res.status(400).send({ status: false, message: "Email or Phone number already in use" })
@@ -80,15 +80,12 @@ const registerUser = async function (req, res) {
 
         newuser.password = password
 
-        // if(isValid(address)){
-        //      if(isValid(address.street)||isValid(address.city)||isValid(address.pincode))
-        newuser.address = address
+        if(address){
+        newuser.address = address}
 
-        //}
-        //valdation ends
 
         const newUser = await user.create(data)
-        res.status(201).send({ status: true, message: "sucess", data: newUser })
+        res.status(201).send({ status: true, message: "success", data: newUser })
 
 
     }
@@ -97,7 +94,7 @@ const registerUser = async function (req, res) {
     }
 }
 
-//---------------------user login-----------------------------//
+//<<---------------------------------------------user login-------------------------------------------------->>
 
 const login = async function (req, res) {
     try {
@@ -133,10 +130,8 @@ const login = async function (req, res) {
         let token = jwt.sign(
             {
                 userId: loginUser._id,
-                //iat:,
-                expiresIn: '1h'
-
-            }, "pro@3"
+                iat:Math.floor(Date.now()/1000),
+                }, "pro@3",{expiresIn: '10h'}
         )
         res.setHeader("x-api-key", token)
         res.status(201).send({ status: true, message: 'Success', data: token }) //creating jwt after successful login by author

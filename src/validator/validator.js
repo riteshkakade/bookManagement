@@ -76,6 +76,15 @@ const checkarray = function (arr) {
   return true
 
 }
+
+const isValidRating=function(rating){
+  if(rating>=1&&rating<=5){
+    return true
+  }
+  else
+  return false
+
+}
   module.exports = {
     isValid,
     isValidName,
@@ -90,5 +99,6 @@ const checkarray = function (arr) {
     isValidObjectId,
     isValidISBN,
     checkarray,
-    isValidDate
+    isValidDate,
+    isValidRating
   };
