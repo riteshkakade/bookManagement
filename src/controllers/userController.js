@@ -49,7 +49,7 @@ const registerUser = async function (req, res) {
         }
 
         if (!isValidMobile(phone)) {
-            return res.status(400).send({ status: false, message: "Please enter a valid indian phone number" })
+            return res.status(400).send({ status: false, message: "Please enter a valid indian phone number in string " })
         }
 
         if (!isValid(email)) {
@@ -124,7 +124,7 @@ const login = async function (req, res) {
 
         var loginUser = await user.findOne({ email: email, password: password })
         if (!loginUser) {
-            res.status(401).send({ status: false, message: "login Credentials are wrong" }) //login email and password does not match validation.
+            return res.status(401).send({ status: false, message: "login Credentials are wrong" }) //login email and password does not match validation.
         }
 
         let token = jwt.sign(
