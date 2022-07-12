@@ -44,13 +44,13 @@ const createReview = async (req, res) => {
 
         //validating reviewer's name
         
-        if(!isValid(reviewedBy)){
-            return res.status(400).send({ status: false, message: "name of the reviewer is required" }) 
-        }
+        // if(!isValid(reviewedBy)){
+        //     return res.status(400).send({ status: false, message: "name of the reviewer is required" }) 
+        // }
 
-        if(!isValidUser(reviewedBy)){
-            return res.status(400).send({ status: false, message: "name of the reviewer is not valid" }) 
-        }
+        // if(!isValidUser(reviewedBy)){
+        //     return res.status(400).send({ status: false, message: "name of the reviewer is not valid" }) 
+        // }
         newreview.reviewedBy=reviewedBy
 
         //validating rating
@@ -130,9 +130,9 @@ const updateReviewById = async (req, res) => {
             return res.status(400).send({ status: false, message: "name of the reviewer field value cannot be empty" }) 
         }
 
-        if(!isValidUser(reviewedBy)){
-            return res.status(400).send({ status: false, message: "name of the reviewer is not valid" }) 
-        }
+        // if(!isValidUser(reviewedBy)){
+        //     return res.status(400).send({ status: false, message: "name of the reviewer is not valid" }) 
+        // }
         update.reviewedBy=reviewedBy
     }
 
@@ -151,7 +151,7 @@ const updateReviewById = async (req, res) => {
             return res.status(400).send({ status: false, message: "review field value cannot be empty" }) 
         }
         review=extraspace(review)
-        update.review
+        update.review=review
     }
         
     const updatedreview = await reviewModel.findOneAndUpdate({_id : reviewId, isDeleted : false},update, {new : true})
