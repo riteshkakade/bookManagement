@@ -40,6 +40,7 @@ const createBook = async function(req, res) {
             return res.status(400).send({ status: false, message: "Title is required" })
         }
 
+        title=title.trim()
         let isTitleAlreadyExist=await bookModel.findOne({title:{$regex:title,$options:"$i"},isDeleted:false})
         if(isTitleAlreadyExist){
             return res.status(409).send({ status: false, message: "book with this title already exist" }) 
@@ -215,7 +216,9 @@ const updateBookById = async (req, res) => {
             if(title.trim()==0){
                 return res.status(400).send({ status: false, message: "please send some value in title to update" })
             }
-            let isTitleAlreadyExist=await bookModel.findOne({title:title,isDeleted:false})
+            title=title.trim()
+            let isTitleAlreadyExist=await bookModel.findOne({title:{$regex:title,$options:"$i"},isDeleted:false})
+            
             if(isTitleAlreadyExist){
                 return res.status(409).send({ status: false, message: "book with this title already exist" }) 
             }
