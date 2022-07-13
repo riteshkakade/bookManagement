@@ -44,17 +44,22 @@ const createReview = async (req, res) => {
 
         //validating reviewer's name
         
-        // if(!isValid(reviewedBy)){
-        //     return res.status(400).send({ status: false, message: "name of the reviewer is required" }) 
-        // }
+        if(!isValid(reviewedBy)){
+           // return res.status(400).send({ status: false, message: "name of the reviewer is required" }) 
+           newreview.reviewedBy='Guest'
+        }
 
-        // if(!isValidUser(reviewedBy)){
-        //     return res.status(400).send({ status: false, message: "name of the reviewer is not valid" }) 
-        // }
+        if(isValid(reviewedBy)){
+        if(!isValidUser(reviewedBy)){
+            return res.status(400).send({ status: false, message: "name of the reviewer is not valid" }) 
+        }
         newreview.reviewedBy=reviewedBy
+    
+    }
+       
 
         //validating rating
-        if(!isValid){
+        if(!rating){
             return res.status(400).send({ status: false, message: "rating is required" }) 
         }
         if(!isValidRating(rating)){
@@ -108,7 +113,7 @@ const updateReviewById = async (req, res) => {
             return res.status(400).send({ status: false, message: "invalid reviewId" })
         }
 
-        const reviewExist = await reviewModel.findOne({_id:reviewId,isDeleted:false})
+        const reviewExist = await reviewModel.findOne({_id:reviewId,bookId:bookId,isDeleted:false})
         if (!reviewExist) {
             return res.status(404).send({
                 status: false,
@@ -117,7 +122,7 @@ const updateReviewById = async (req, res) => {
         }
         const data = req.body
         if(!isValidRequest(data)){
-            return res.status(400).send({ status: false, message: "No data recived in request to update" })
+            return res.status(400).send({ status: false, message: "No data recieved in request to update" })
         }
 
         //extracting params
@@ -130,16 +135,13 @@ const updateReviewById = async (req, res) => {
             return res.status(400).send({ status: false, message: "name of the reviewer field value cannot be empty" }) 
         }
 
-        // if(!isValidUser(reviewedBy)){
-        //     return res.status(400).send({ status: false, message: "name of the reviewer is not valid" }) 
-        // }
+        if(!isValidUser(reviewedBy)){
+            return res.status(400).send({ status: false, message: "name of the reviewer is not valid" }) 
+        }
         update.reviewedBy=reviewedBy
     }
-
-    if(rating){
-        if(!isValid){
-            return res.status(400).send({ status: false, message: "rating field value is empty" }) 
-        }
+//console.log(typeof(rating))
+    if(typeof(rating)!==undefined){
         if(!isValidRating(rating)){
             return res.status(400).send({ status: false, message: "rating should be between 1-5" }) 
         }
@@ -187,7 +189,7 @@ const deleteReviewById = async (req, res) => {
             return res.status(400).send({ status: false, message: "invalid reviewId" })
         }
 
-        const reviewExist = await reviewModel.findOne({_id:reviewId,isDeleted:false})
+        const reviewExist = await reviewModel.findOne({_id:reviewId,bookId:bookId,isDeleted:false})
         if (!reviewExist) {
             return res.status(404).send({
                 status: false,

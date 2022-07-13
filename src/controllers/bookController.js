@@ -40,7 +40,7 @@ const createBook = async function(req, res) {
             return res.status(400).send({ status: false, message: "Title is required" })
         }
 
-        let isTitleAlreadyExist=await bookModel.findOne({title:title,isDeleted:false})
+        let isTitleAlreadyExist=await bookModel.findOne({title:{$regex:title,$options:"$i"},isDeleted:false})
         if(isTitleAlreadyExist){
             return res.status(409).send({ status: false, message: "book with this title already exist" }) 
         }
@@ -134,7 +134,8 @@ const getBooks=async function(req,res){
 
         }
         if(userId){
-            if (!isValid(title)) {
+           
+            if (!isValid(userId)) {
                 return res.status(400).send({ status: false, message: "userId field is empty" })
             }
             if(!isValidObjectId(userId)){
@@ -233,6 +234,9 @@ const updateBookById = async (req, res) => {
           
 
           if(releasedAt){
+            if(releasedAt.trim()==0){
+                return res.status(400).send({ status: false, message: "please send some value in releasedAt to update" })   
+              }
             if(!isValidDate(releasedAt)){
                 return res.status(400).send({status:false,message:"Date should be in this format(YYYY-MM-DD)"})
                }
@@ -243,6 +247,10 @@ const updateBookById = async (req, res) => {
                 if(!isValidISBN(ISBN)){
                     return res.status(400).send({status:false,message:"invalid ISBN code"})
                 }
+                let isISBNAlreadyExist=await bookModel.findOne({ISBN:ISBN,isDeleted:false})
+        if(isISBNAlreadyExist){
+            return res.status(409).send({ status: false, message: "book with this ISBN code already exist" }) 
+        }
                 update.ISBN=ISBN
             }
             //validation ends
